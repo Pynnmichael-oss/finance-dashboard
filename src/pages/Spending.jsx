@@ -7,7 +7,18 @@ import {
 import seedTransactions from '../data/transactions.json'
 import PageHeader from '../components/PageHeader'
 
-const STORAGE_KEY = 'finance_dashboard_transactions'
+const STORAGE_KEY   = 'finance_dashboard_transactions'
+const IMPORT_LOG_KEY = 'finance_dashboard_import_log'
+
+// Write one entry to the shared import log (also read by Portfolio page)
+const writeImportLog = (entry) => {
+  try {
+    const raw = localStorage.getItem(IMPORT_LOG_KEY)
+    const log = raw ? JSON.parse(raw) : []
+    log.unshift({ ...entry, id: Date.now(), timestamp: new Date().toISOString() })
+    localStorage.setItem(IMPORT_LOG_KEY, JSON.stringify(log.slice(0, 100)))
+  } catch { /* log failures must not break the import */ }
+}
 
 const COLORS = ['#60a5fa', '#34d399', '#fbbf24', '#f87171', '#a78bfa', '#f472b6', '#94a3b8', '#fb923c', '#4ade80']
 
@@ -196,11 +207,46 @@ export default function Spending() {
   }
 
   const confirmImport = () => {
-    const updated = [...storedTxns, ...preview]
+    if (!preview) return
+
+    // Build a fingerprint for every transaction already in the list so we can
+    // skip duplicates (same date + description + amount = same charge)
+    const existing = new Set(
+      allTransactions.map((t) => `${t.date}|${t.description}|${t.amount}`)
+    )
+    const newTxns  = preview.filter(
+      (t) => !existing.has(`${t.date}|${t.description}|${t.amount}`)
+    )
+    const dupCount = preview.length - newTxns.length
+
+    const updated = [...storedTxns, ...newTxns]
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
     setStoredTxns(updated)
+
+    // Log this import so it appears in the Import History on the Portfolio page
+    writeImportLog({
+      type:         'transactions',
+      account:      importCard,
+      rowsImported: newTxns.length,
+      rowsSkipped:  dupCount,
+      skippedDetails: dupCount > 0
+        ? [`${dupCount} duplicate transaction${dupCount !== 1 ? 's' : ''} skipped (matched on date + description + amount)`]
+        : [],
+    })
+
     setPreview(null)
   }
+
+  // How many rows in the current preview would be duplicates (computed before confirm)
+  const previewDupCount = useMemo(() => {
+    if (!preview) return 0
+    const existing = new Set(
+      allTransactions.map((t) => `${t.date}|${t.description}|${t.amount}`)
+    )
+    return preview.filter(
+      (t) => existing.has(`${t.date}|${t.description}|${t.amount}`)
+    ).length
+  }, [preview, allTransactions])
 
   // Transactions sorted newest-first for the table
   const sortedFiltered = useMemo(
@@ -346,9 +392,18 @@ export default function Spending() {
         {preview && (
           <div className="mt-5">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-sm text-slate-300">
-                {preview.length} transaction{preview.length !== 1 ? 's' : ''} ready to import
-              </p>
+              <div>
+                <p className="text-sm text-slate-300">
+                  {preview.length} transaction{preview.length !== 1 ? 's' : ''} parsed
+                  {' · '}
+                  <span className="text-green-400">{preview.length - previewDupCount} new</span>
+                  {previewDupCount > 0 && (
+                    <span className="text-yellow-400 ml-1">
+                      · {previewDupCount} duplicate{previewDupCount !== 1 ? 's' : ''} will be skipped
+                    </span>
+                  )}
+                </p>
+              </div>
               <div className="flex gap-2">
                 <button
                   onClick={() => setPreview(null)}
