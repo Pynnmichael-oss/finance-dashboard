@@ -1,6 +1,6 @@
 // App — root layout: sidebar on the left, page content on the right
 import { useState } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Sidebar from './components/Sidebar'
 import Overview from './pages/Overview'
 import NetWorth from './pages/NetWorth'
@@ -12,7 +12,7 @@ export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="flex h-screen bg-slate-950 text-slate-100 overflow-hidden">
 
         {/* Sidebar — always visible on desktop, slide-in drawer on mobile */}
@@ -46,6 +46,6 @@ export default function App() {
           </main>
         </div>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
