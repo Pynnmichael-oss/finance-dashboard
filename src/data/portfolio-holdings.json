@@ -1,0 +1,8 @@
+[
+  { "account": "rothIRA", "ticker": "VTI",  "shares": 180, "costBasis": 280.00, "currentPrice": 242.00 },
+  { "account": "rothIRA", "ticker": "VXUS", "shares": 120, "costBasis": 55.00,  "currentPrice": 62.00  },
+  { "account": "ira",     "ticker": "VTI",  "shares": 28,  "costBasis": 210.00, "currentPrice": 242.00 },
+  { "account": "brokerage", "ticker": "VTI",  "shares": 160, "costBasis": 195.00, "currentPrice": 242.00 },
+  { "account": "brokerage", "ticker": "VXUS", "shares": 80,  "costBasis": 52.00,  "currentPrice": 62.00  },
+  { "account": "brokerage", "ticker": "BND",  "shares": 60,  "costBasis": 72.00,  "currentPrice": 73.00  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "date": "2025-02-01",
+    "accounts": {
+      "rothIRA": 68000,
+      "ira": 6800,
+      "401k": 12000,
+      "brokerage": 67000,
+      "checking": 3200,
+      "venmo": 50
+    }
+  },
+  {
+    "date": "2025-03-01",
+    "accounts": {
+      "rothIRA": 69500,
+      "ira": 7100,
+      "401k": 6000,
+      "brokerage": 68500,
+      "checking": 2800,
+      "venmo": 0
+    }
+  },
+  {
+    "date": "2025-04-01",
+    "accounts": {
+      "rothIRA": 70200,
+      "ira": 7000,
+      "401k": 0,
+      "brokerage": 69800,
+      "checking": 2500,
+      "venmo": 0
+    }
+  },
+  {
+    "date": "2025-05-01",
+    "accounts": {
+      "rothIRA": 71000,
+      "ira": 7000,
+      "401k": 0,
+      "brokerage": 70000,
+      "checking": 2000,
+      "venmo": 0
+    }
+  }
+]

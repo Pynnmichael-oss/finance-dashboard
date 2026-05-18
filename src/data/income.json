@@ -1,0 +1,6 @@
+[
+  { "month": "2025-02", "income": 7500, "invested": 1500, "spend": 3200 },
+  { "month": "2025-03", "income": 7500, "invested": 1500, "spend": 2900 },
+  { "month": "2025-04", "income": 7500, "invested": 2000, "spend": 3100 },
+  { "month": "2025-05", "income": 7500, "invested": 1500, "spend": 2800 }
+]
