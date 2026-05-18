@@ -1,16 +1,50 @@
-# React + Vite
+# Finance Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A personal financial dashboard built with React + Vite. All data lives locally — no backend, no accounts.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 18** + **Vite**
+- **Recharts** — charts
+- **Tailwind CSS** — styling
+- **React Router** — navigation
+- **localStorage** — persistence for added snapshots and imported transactions
 
-## React Compiler
+## Pages
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Page | What it shows |
+|------|---------------|
+| **Overview** | Net worth hero card, sparkline trend, monthly spend vs prior month, savings rate |
+| **Net Worth** | Historical area chart, account breakdown table, add-snapshot form |
+| **Portfolio** | Allocation donut charts (by account + by asset), holdings table with gain/loss per position |
+| **Spending** | Category bar chart, card donut, transaction table with month + card filters, CSV import |
+| **Cash Flow** | Income vs spend vs invested grouped bars, savings rate trend line, monthly table |
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+npm install
+npm run dev
+```
+
+Open http://localhost:5173
+
+## CSV import
+
+On the Spending page you can import Amex or Chase CSV exports. The format is auto-detected from the header row:
+
+- **Amex**: `Date, Description, Amount` (positive = charge)
+- **Chase**: `Transaction Date, Post Date, Description, ..., Amount` (negative = charge)
+
+Imported transactions are appended to localStorage and persist between sessions.
+
+## Data files
+
+Seed data lives in `src/data/`. Swap in your own numbers:
+
+| File | Contents |
+|------|----------|
+| `net-worth-snapshots.json` | Monthly account balances |
+| `portfolio-holdings.json` | Holdings with shares, cost basis, current price |
+| `transactions.json` | Credit card transactions |
+| `income.json` | Monthly income, spend, and invested amounts |
